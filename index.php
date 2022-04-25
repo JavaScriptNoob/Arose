@@ -9,7 +9,7 @@
 </head>
 <body>
 <?php
-$eerr ="error";
+$eerr = "error";
 echo $eerr;
 ?>
 <d>fghdfgdfg</d>
