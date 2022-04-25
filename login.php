@@ -39,14 +39,15 @@ class NewUser
 
     }
 
-    public function appendData() {
+    public function appendData()
+    {
         $n = $this->name;
         $p = $this->password;
         $token = hash('ripemd128', $p);
 
         $file = fopen('db.txt', 'a+');
         fwrite($file, $n . ";" . $token . ';');
-        return "<br>".$n.$token."<br>";
+        return "<br>" . $n . $token . "<br>";
     }
 
     public function createArray()
@@ -59,13 +60,29 @@ class NewUser
         while (count($dbArray)) {
             list($key, $value) = array_splice($dbArray, 0, 2);
             $newDBArray[$key] = $value;
-            echo "<br>".$key;
+            echo "<br>" . $key;
         }
 
-        echo "<br>".$newDBArray['TimurBobylev'];
+        echo "<br>" . $newDBArray['TimurBobylev'];
         return $newDBArray;
     }
 
+    public function verifyUser($data, $name)
+    {
+        $p = $this->password;
+        $token = hash('ripemd128', $p);
+
+        if ($data[$name] == $token) {
+            echo "<br>";
+            echo "<br>";
+            echo "<p> $token Is euqal to " . $data[$name] . "<p/>";
+
+        } else {
+            echo "Felaktigt användarnamn och/eller felaktigt lösenord";
+        }
+
+
+    }
 
 }
 
@@ -76,32 +93,30 @@ if (isset($_POST['register']) && $_POST['name'] && $_POST['email']) {
     $init = new NewUser($withoutWhiteSpace, $_POST['email']);
     $init->storeData();
     $dbArray = $init->createArray();
-    if(array_key_exists($withoutWhiteSpace, $dbArray)){
+    if (array_key_exists($withoutWhiteSpace, $dbArray)) {
         echo "Nickname is occupyed";
-    }else{
+    } else {
         echo "Nickname is free";
         echo $init->appendData();
     }
 
 }
 
-if (isset($_POST['register']) && $_POST['name'] && $_POST['email']) {
-    echo $_POST['register'] . " was clicked";
+if (isset($_POST['login']) && $_POST['name'] && $_POST['email']) {
+    echo $_POST['login'] . " was clicked";
     $withoutWhiteSpace = str_replace(' ', '', $_POST['name']);
     $init = new NewUser($withoutWhiteSpace, $_POST['email']);
     $init->storeData();
     $dbArray = $init->createArray();
-    if(array_key_exists($withoutWhiteSpace, $dbArray)){
-        echo "Nickname is occupyed";
-    }else{
-        echo "Nickname is free";
-        echo $init->appendData();
+    if (array_key_exists($withoutWhiteSpace, $dbArray)) {
+        $init->verifyUser($dbArray, $withoutWhiteSpace) . "Name";
+
+    } else {
+        echo "<p>Fel<p/>";
+
+
     }
 }
-
-
-
-
 
 
 ?>
