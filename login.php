@@ -46,6 +46,7 @@ class NewUser
 
         $file = fopen('db.txt', 'a+');
         fwrite($file, $n . ";" . $token . ';');
+        return "<br>".$n.$token."<br>";
     }
 
     public function createArray()
@@ -60,7 +61,7 @@ class NewUser
             $newDBArray[$key] = $value;
             echo "<br>".$key;
         }
-        var_dump($newDBArray);
+
         echo "<br>".$newDBArray['TimurBobylev'];
         return $newDBArray;
     }
@@ -71,23 +72,37 @@ class NewUser
 
 if (isset($_POST['register']) && $_POST['name'] && $_POST['email']) {
     echo $_POST['register'] . " was clicked";
-    $init = new NewUser(str_replace(' ', '', $_POST['name']), $_POST['email']);
+    $withoutWhiteSpace = str_replace(' ', '', $_POST['name']);
+    $init = new NewUser($withoutWhiteSpace, $_POST['email']);
+    $init->storeData();
+    $dbArray = $init->createArray();
+    if(array_key_exists($withoutWhiteSpace, $dbArray)){
+        echo "Nickname is occupyed";
+    }else{
+        echo "Nickname is free";
+        echo $init->appendData();
+    }
 
-    $usersDB = $init->storeData();
-    echo "<br>".$usersDB . "<br>"."hjhjkkhjkhjkjhk"."<br>";
-    echo gettype($usersDB), "\n";
-    $init->createArray();
+}
 
+if (isset($_POST['register']) && $_POST['name'] && $_POST['email']) {
+    echo $_POST['register'] . " was clicked";
+    $withoutWhiteSpace = str_replace(' ', '', $_POST['name']);
+    $init = new NewUser($withoutWhiteSpace, $_POST['email']);
+    $init->storeData();
+    $dbArray = $init->createArray();
+    if(array_key_exists($withoutWhiteSpace, $dbArray)){
+        echo "Nickname is occupyed";
+    }else{
+        echo "Nickname is free";
+        echo $init->appendData();
+    }
 }
 
 
 
 
 
-if
-(isset($_POST['login'])) {
-    echo $_POST['login'] . " was clicked";
-}
 
 ?>
 </body>
