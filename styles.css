@@ -1,0 +1,74 @@
+body{
+    background-color: #121212;
+    height: 100%;
+    margin: 0 auto;
+
+
+}
+
+.center-container{
+
+
+    justify-content: center;
+    vertical-align: center;
+    margin: 2% 30% 2% 30%;
+
+}
+form{
+    display: flex;
+    flex-direction: column;
+    background-color: #1D1D1D;
+    padding: 10%;
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.08), 0px 2px 12px rgba(0, 0, 0, 0.32);
+    margin: 3%;
+}
+form>input {
+    background-color: #606368;
+
+    width: 280px;
+    height: 25px;
+    align-self: center;
+    box-sizing: border-box;
+    border: #c8b9d9 solid 1px;
+    margin-bottom: 25px;
+    color: #f87af8;
+    border-radius: 5px;
+}
+input:focus{
+    background-color: #8c43e0;
+    border: #131338 2px solid;
+    color: beige ;
+}
+footer{
+    display: flex;
+    justify-content: center;
+
+
+}
+footer> div{
+    display: flex;
+    justify-content: center;
+    vertical-align: center;
+    width: 380px;
+    height: 120px;
+    background-color: #1D1D1D;
+
+
+
+}
+input[name="name"]::-webkit-input-placeholder,input[name="password"]::-webkit-input-placeholder {
+    color: #f87af8;
+    }
+footer>div>p{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    color: #d24242;
+
+    text-align: center;
+
+
+}
+.success{
+    color: #56f892;
+}

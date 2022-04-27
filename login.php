@@ -5,15 +5,19 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="styles.css">
     <title>Document</title>
 </head>
 <body>
-<form action="" method="post">
-    <input type="text" name="name">
-    <input type="email" name="email">
-    <input name="login" type="submit" value="login">
-    <input name="register" type="submit" value="register">
-</form>
+<div class="center-container">
+    <form action="" method="post">
+        <input type="text" name="name" placeholder="Login">
+        <input type="password" name="password" placeholder="Lösenord">
+        <input name="login" type="submit" value="login">
+        <input name="register" type="submit" value="register">
+    </form>
+</div>
+
 <?php
 session_start();
 
@@ -53,17 +57,17 @@ class NewUser
     public function createArray()
     {
         $dataDB = $this->dataDB;
-        echo "<br>" . $dataDB . "   create array";
+
         $dbArray = explode(";", $dataDB);
         $newDBArray = array();
-        print_r($dbArray);
+
         while (count($dbArray)) {
             list($key, $value) = array_splice($dbArray, 0, 2);
             $newDBArray[$key] = $value;
-            echo "<br>" . $key;
+
         }
 
-        echo "<br>" . $newDBArray['TimurBobylev'];
+
         return $newDBArray;
     }
 
@@ -73,12 +77,11 @@ class NewUser
         $token = hash('ripemd128', $p);
 
         if ($data[$name] == $token) {
-            echo "<br>";
-            echo "<br>";
-            echo "<p> $token Is euqal to " . $data[$name] . "<p/>";
+
+            header("Location: index.php?");
 
         } else {
-            echo "Felaktigt användarnamn och/eller felaktigt lösenord";
+            echo '<footer><div class="error"><p class="error-message">Felaktigt användarnamn och/eller felaktigt lösenord</p></div> </footer>';
         }
 
 
@@ -87,35 +90,42 @@ class NewUser
 }
 
 
-if (isset($_POST['register']) && $_POST['name'] && $_POST['email']) {
-    echo $_POST['register'] . " was clicked";
-    $withoutWhiteSpace = str_replace(' ', '', $_POST['name']);
-    $init = new NewUser($withoutWhiteSpace, $_POST['email']);
+if (isset($_POST['register']) && $_POST['name'] && $_POST['password']) {
+    $toLower = strtolower($_POST['name']);
+    $withoutWhiteSpace = str_replace(' ', '', $toLower);
+    $init = new NewUser($withoutWhiteSpace, $_POST['password']);
     $init->storeData();
     $dbArray = $init->createArray();
     if (array_key_exists($withoutWhiteSpace, $dbArray)) {
-        echo "Nickname is occupyed";
+        echo '<footer><div ><p>'.'Användarnamn finns redan'.'</p></div></footer>';
     } else {
-        echo "Nickname is free";
-        echo $init->appendData();
+        echo '<footer><div ><p class="success">' . $_POST['name'] . " är registrerad som användare" . "</p></div></footer>  ";
+        $init->appendData();
     }
 
 }
 
-if (isset($_POST['login']) && $_POST['name'] && $_POST['email']) {
-    echo $_POST['login'] . " was clicked";
-    $withoutWhiteSpace = str_replace(' ', '', $_POST['name']);
-    $init = new NewUser($withoutWhiteSpace, $_POST['email']);
+if (isset($_POST['login']) && $_POST['name'] && $_POST['password']) {
+
+    $toLower = strtolower($_POST['name']);
+
+    $withoutWhiteSpace = str_replace(' ', '', $toLower);
+    $init = new NewUser($withoutWhiteSpace, $_POST['password']);
     $init->storeData();
     $dbArray = $init->createArray();
     if (array_key_exists($withoutWhiteSpace, $dbArray)) {
         $init->verifyUser($dbArray, $withoutWhiteSpace) . "Name";
+        $_SESSION["name"] = $_POST["name"];
+        $_SESSION['home'] = $_SERVER['HTTP_HOST'];
+
 
     } else {
-        echo "<p>Fel<p/>";
+        echo '<footer><div ><p>'.'För att logga in, skapa ett konto'.'</p></div></footer>';
 
 
     }
+}else{
+    echo '<footer><div ><p>'.'Inget angett användarnamn eller lösenord'.'</p></div></footer>';
 }
 
 
