@@ -124,7 +124,7 @@ if (isset($_POST['login']) && $_POST['name'] && $_POST['password']) {
 
 
     }
-}else{
+}elseif(isset($_POST['login']) && !$_POST['name'] && !$_POST['password']||isset($_POST['register']) && !$_POST['name'] && !$_POST['password']){
     echo '<footer><div ><p>'.'Inget angett användarnamn eller lösenord'.'</p></div></footer>';
 }
 
