@@ -57,17 +57,20 @@ class NewUser
     public function createArray()
     {
         $dataDB = $this->dataDB;
+        var_dump($dataDB);
+        $trashdbArray = explode(";", $dataDB);
+        $pop= array_pop($trashdbArray);
+        echo "<br><br>";
 
-        $dbArray = explode(";", $dataDB);
-        $newDBArray = array();
+        echo "<br><br>";
+        $newDBArray=   array_combine(
+                        array_filter($trashdbArray, function($key) { return $key % 2 == 0; }, ARRAY_FILTER_USE_KEY),
+                        array_filter($trashdbArray, function($key) { return $key % 2 != 0; }, ARRAY_FILTER_USE_KEY)
+                );
+        echo "<br><br>";
 
-        while (count($dbArray)) {
-            list($key, $value) = array_splice($dbArray, 0, 2);
-            $newDBArray[$key] = $value;
-
-        }
-
-
+        echo "<br><br>";
+        print_r($newDBArray);
         return $newDBArray;
     }
 

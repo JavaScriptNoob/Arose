@@ -15,8 +15,9 @@
 <?php
 session_start();
 
-if ($_GET["quit"]||strlen($_SESSION['name'])<2){
+if ( isset($_GET["quit"])||strlen($_SESSION['name'])<1){
     unset($_SESSION["name"]);
+    session_destroy();
     header("Location:login.php");
 
 
@@ -25,9 +26,6 @@ if ($_GET["quit"]||strlen($_SESSION['name'])<2){
     echo $_SESSION['name'];
 
 }
-//if(isset($_SESSION[name])){
-//    echo $_SESSION[name];
-//}
 
 
 ?>
