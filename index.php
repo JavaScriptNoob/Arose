@@ -23,7 +23,7 @@ if ( isset($_GET["quit"])||strlen($_SESSION['name'])<1){
 
 
 }else{
-    echo $_SESSION['name'];
+    echo "Hej,".ucfirst($_SESSION['name'])."  du är inloggad";
 
 }
 

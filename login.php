@@ -1,14 +1,4 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="styles.css">
-    <title>Document</title>
-</head>
-<body>
+
 <div class="center-container">
     <form action="" method="post">
         <input type="text" name="name" placeholder="Login">
@@ -57,20 +47,18 @@ class NewUser
     public function createArray()
     {
         $dataDB = $this->dataDB;
-        var_dump($dataDB);
         $trashdbArray = explode(";", $dataDB);
-        $pop= array_pop($trashdbArray);
-        echo "<br><br>";
+        array_pop($trashdbArray);
+        $newDBArray = array_combine(
+                array_filter($trashdbArray, function ($key) {
+                    return $key % 2 == 0;
+                }, ARRAY_FILTER_USE_KEY),
+                array_filter($trashdbArray, function ($key) {
+                    return $key % 2 != 0;
+                }, ARRAY_FILTER_USE_KEY)
+        );
 
-        echo "<br><br>";
-        $newDBArray=   array_combine(
-                        array_filter($trashdbArray, function($key) { return $key % 2 == 0; }, ARRAY_FILTER_USE_KEY),
-                        array_filter($trashdbArray, function($key) { return $key % 2 != 0; }, ARRAY_FILTER_USE_KEY)
-                );
-        echo "<br><br>";
 
-        echo "<br><br>";
-        print_r($newDBArray);
         return $newDBArray;
     }
 
@@ -93,20 +81,7 @@ class NewUser
 }
 
 
-if (isset($_POST['register']) && $_POST['name'] && $_POST['password']) {
-    $toLower = strtolower($_POST['name']);
-    $withoutWhiteSpace = str_replace(' ', '', $toLower);
-    $init = new NewUser($withoutWhiteSpace, $_POST['password']);
-    $init->storeData();
-    $dbArray = $init->createArray();
-    if (array_key_exists($withoutWhiteSpace, $dbArray)) {
-        echo '<footer><div ><p>'.'Användarnamn finns redan'.'</p></div></footer>';
-    } else {
-        echo '<footer><div ><p class="success">' . $_POST['name'] . " är registrerad som användare" . "</p></div></footer>  ";
-        $init->appendData();
-    }
 
-}
 
 if (isset($_POST['login']) && $_POST['name'] && $_POST['password']) {
 
@@ -123,16 +98,15 @@ if (isset($_POST['login']) && $_POST['name'] && $_POST['password']) {
 
 
     } else {
-        echo '<footer><div ><p>'.'För att logga in, skapa ett konto'.'</p></div></footer>';
+        echo '<footer><div ><p>' . 'För att logga in, skapa ett konto' . '</p></div></footer>';
 
 
     }
-}elseif(isset($_POST['login']) && !$_POST['name'] && !$_POST['password']||isset($_POST['register']) && !$_POST['name'] && !$_POST['password']){
-    echo '<footer><div ><p>'.'Inget angett användarnamn eller lösenord'.'</p></div></footer>';
+} elseif (isset($_POST['login']) && !$_POST['name'] ||isset($_POST['login'])&& !$_POST['password'] ) {
+    echo '<footer><div ><p>' . 'Inget angett användarnamn eller lösenord' . '</p></div></footer>';
 }
 
 
 ?>
-</body>
-</html>
+
 
